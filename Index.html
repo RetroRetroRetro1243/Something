@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skulpt Animation</title>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.0.0/skulpt.min.js"></script>
+    <style>
+        #box {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <button id="animateBtn">Click Me!</button>
+    <div id="box"></div>
+
+    <script>
+        // This function will handle the button click to trigger the animation
+        document.getElementById('animateBtn').onclick = function() {
+            // This is where we'll trigger the animation using Python
+            runPythonAnimation();
+        };
+
+        // Function to handle running Python code using Skulpt
+        function runPythonAnimation() {
+            var code = `
+import random
+import time
+
+# Animation code: Move the box randomly
+def move_box():
+    from browser import document
+    
+    box = document['box']
+    box.style.left = str(random.randint(0, 500)) + 'px'  # Moves the box horizontally
+    box.style.top = str(random.randint(0, 500)) + 'px'  # Moves the box vertically
+
+    # Call the move_box function after 1 second to animate continuously
+    time.sleep(1)
+    move_box()
+
+move_box()
+            `;
+
+            // Configure Skulpt to run the Python code
+            Skulpt.configure({inputfun: function(prompt) {return '';}, outputfun: function(str) {console.log(str);}});
+            Skulpt.run(code);
+        }
+    </script>
+</body>
+</html>
